@@ -1,0 +1,43 @@
+{
+  "name": "express-tracing-middleware",
+  "version": "0.1.0",
+  "description": "Middleware to faciliate tracing requests through an express application",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "example": "node example/example.js",
+    "test": "env NODE_ENV=test NODE_PATH=. istanbul cover -x *.test.js _mocha test/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/evanshortiss/express-tracing-middleware.git"
+  },
+  "author": "Evan Shortiss",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/evanshortiss/express-tracing-middleware/issues"
+  },
+  "homepage": "https://github.com/evanshortiss/express-tracing-middleware",
+  "dependencies": {
+    "fhlog": "^0.12.1",
+    "get-env": "evanshortiss/get-env",
+    "lodash.find": "^4.2.0",
+    "lodash.map": "^4.2.1",
+    "on-finished": "^2.3.0",
+    "uuid": "^2.0.1",
+    "verror": "^1.6.0",
+    "xtend": "^4.0.1"
+  },
+  "peerDependencies": {
+    "fh-mbaas-api": ">=4.4.*"
+  },
+  "devDependencies": {
+    "async": "^2.0.0-rc.1",
+    "chai": "^3.5.0",
+    "express": "^4.13.4",
+    "istanbul": "^0.4.2",
+    "mocha": "^2.4.5",
+    "proxyquire": "^1.7.4",
+    "sinon": "^1.17.3"
+  }
+}
