@@ -84,7 +84,7 @@ describe('fh-service-tracer', function () {
 
         expect(serviceStub.called).to.be.true;
         expect(serviceStub.getCall(0).args[0].method).to.equal('POST');
-        expect(serviceStub.getCall(0).args[0].path).to.equal('/traces');
+        expect(serviceStub.getCall(0).args[0].path).to.equal('/trace');
         expect(serviceStub.getCall(0).args[0].guid).to.equal(guid);
         expect(serviceStub.getCall(0).args[0].timeout).to.equal(15000);
         expect(serviceStub.getCall(0).args[0].params).to.equal(traces);
