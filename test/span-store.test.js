@@ -64,7 +64,12 @@ describe('span-store', function () {
         ts: Date.now()
       };
 
+      var statusCode = 304;
+
       var store = mod({
+        res: {
+          statusCode: statusCode
+        },
         req: req,
         appId: appId,
         tracers: [tracerStub]
@@ -92,6 +97,7 @@ describe('span-store', function () {
         url: req.url,
         headers: req.headers,
         appId: appId,
+        statusCode: statusCode,
         spans: [spanData],
         uuid: traceUuid,
         method: 'GET'
@@ -114,6 +120,8 @@ describe('span-store', function () {
         getEvents: sinon.stub()
       };
 
+      var statusCode = 200;
+
       var req = {
         method: 'GET',
         url: '/test/data',
@@ -129,6 +137,9 @@ describe('span-store', function () {
       };
 
       var store = mod({
+        res: {
+          statusCode: statusCode
+        },
         req: req,
         appId: appId,
         tracers: [tracerStub]
