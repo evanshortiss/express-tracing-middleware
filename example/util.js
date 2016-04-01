@@ -1,5 +1,6 @@
 'use strict';
 
+var tracing = require('../index.js');
 
 /**
  * Generates a random delay in 0-2 second range
@@ -17,7 +18,7 @@ exports.getRandomDelay = function () {
  */
 exports.runAfterDelay = function (fn, delay) {
   // Create a span manually, members[0] is the req Object
-  var delaySpan = process.domain.members[0].trace.createSpan({
+  var delaySpan = tracing.getActiveTrace().createSpan({
     name: 'delay'
   });
 

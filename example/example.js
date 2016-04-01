@@ -84,7 +84,7 @@ function processRequest (req, res, next) {
     // Wrap asynchronous functions so that they're automatically timed for us
     req.trace.tracify(verifySession),
 
-    // We don't wrap this function, but we could
+    // This is timed internally
     getJson
   ], function onRequestProcessed (err, json) {
     if (err) {

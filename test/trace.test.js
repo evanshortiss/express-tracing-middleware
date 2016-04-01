@@ -10,7 +10,8 @@ describe('span-store', function () {
     , spanStoreStub
     , spanStorePushStub
     , finishedStub
-    , writeTracerStub;
+    , writeTracerStub
+    , spanInstanceStubEnd;
 
 
   beforeEach(function () {
@@ -21,6 +22,8 @@ describe('span-store', function () {
     spanStorePushStub = sinon.stub();
     finishedStub = sinon.stub();
     writeTracerStub = sinon.stub();
+    spanInstanceStubEnd = sinon.stub();
+
 
     // Mimic the return of a span-store call
     spanStoreStub.returns({
@@ -76,19 +79,6 @@ describe('span-store', function () {
     expect(spanStorePushStub.getCall(0).args[0]).to.deep.equal(dummySpan);
   });
 
-  // trace._end = function (err) {
-  //   // Create our server send event
-  //   store.spans.push(
-  //     span({
-  //       name: events.SERVER_SEND,
-  //       initEvent: events.SERVER_SEND
-  //     })
-  //   );
-  //
-  //
-  //
-  //   store.writeToTracers(err);
-  // };
 
   describe('#_end', function () {
     it('should write a server send and call writeToTracers', function () {
@@ -96,7 +86,7 @@ describe('span-store', function () {
         name: require('lib/trace-events').events.SERVER_SEND,
         initEvent: require('lib/trace-events').events.SERVER_SEND
       };
-      
+
       spanStub.returns(createdSpan);
 
       mod({})._end(null);
@@ -130,6 +120,48 @@ describe('span-store', function () {
       expect(spanStub.getCall(1).args[0]).to.equal(spanOpts);
 
       expect(span).to.deep.equal(dummySpan);
+    });
+  });
+
+
+  describe('#tracify', function () {
+
+    it('should return a new function and use the function name', function () {
+      var inst = mod({});
+      spanStub.returns({
+        end: spanInstanceStubEnd
+      });
+
+      function inFn (callback) {callback(null);}
+      var fn = inst.tracify(inFn);
+
+      expect(fn).to.not.equal(inFn);
+      expect(spanStub.called).to.be.true;
+
+      fn(function (err) {
+        expect(err).to.not.exit;
+        expect(spanStub.getCall(1).args[0].name).to.equal(inFn.name);
+        expect(spanInstanceStubEnd.called).to.be.true;
+      });
+    });
+
+    it('should return a new function and use the custom name', function () {
+      var inst = mod({});
+      spanStub.returns({
+        end: spanInstanceStubEnd
+      });
+
+      function inFn (callback) {callback(null);}
+      var name = '123';
+      var fn = inst.tracify(inFn, name);
+      expect(fn).to.not.equal(inFn);
+      expect(spanStub.called).to.be.true;
+
+      fn(function (err) {
+        expect(err).to.not.exit;
+        expect(spanStub.getCall(1).args[0].name).to.equal(name);
+        expect(spanInstanceStubEnd.called).to.be.true;
+      });
     });
   });
 });

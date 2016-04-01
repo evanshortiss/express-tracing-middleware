@@ -67,6 +67,8 @@ Check out the examples folder for the code. Or run them using the below
 commands from the root of the project.
 
 ### Simple Example
+This example simply runs an express app and manually traces a function.
+
 ```
 npm run simple-example
 ```
@@ -74,6 +76,9 @@ npm run simple-example
 Now hit http://localhost:3000/something and checkout what your terminal displays.
 
 ### Complex Example
+This example uses node.js domains to trace function that are nested in other
+files so we can track all stages of request processing.
+
 ```
 npm run example
 ```
@@ -117,6 +122,14 @@ it's sent to the tracer. Should accept, and return, a String (req.url)
 before they're sent to the tracer. It should accept, and return, an Object
 (req.headers)
 
+#### module.getActiveTrace()
+Returns the trace that is relevant for the current request being processed.
+To use this you must add domains to your express application and ensure the
+*IncomingRequest* (the *req* Object) is the first in the members list of the
+domain. The easiest way to accomplish this is to add
+*express-domain-middleware* to your application as shown in the
+*examples/example.js* file.
+
 #### module.fhlog
 The FHLog instance being used by this module, can be used to enable logs.
 
@@ -125,11 +138,17 @@ A tracer that can send traces to a FeedHenry mBaaS. Must be passed an Object
 containing the keys:
 
 * fh - An _fh-mbaas-api_ instance.
-* guid: An _AppID_ for the mBaaS you want to send traces to.
+* guid - An _AppID_ for the mBaaS you want to send traces to.
 
 #### module.LogTracer
 Tracer that prints traces to stdout.
 
+#### module.HttpTracer
+Tracer that sends traces to an endpoint. The endpoint is of the format
+*{ENDPOINT}/trace* e.g https://some-domain.com/trace. Options required:
+
+* url - The host to send traces to
+* timeout - Time in ms to wait before the request will timeout
 
 ### instance
 

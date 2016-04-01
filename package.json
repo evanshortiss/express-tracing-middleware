@@ -7,6 +7,9 @@
   "scripts": {
     "example": "node example/example.js",
     "simple-example": "node example/example-simple.js",
+    "lint": "npm run linelint && npm run jshint",
+    "jshint": "jshint $(find ./lib -name '*.js' -not -path '*/node_modules/*')",
+    "linelint": "linelint $(find ./lib -name '*.js' -not -path '*/node_modules/*')",
     "test": "env NODE_ENV=test NODE_PATH=. istanbul cover -x *.test.js _mocha test/*.test.js",
     "unit": "env NODE_ENV=test NODE_PATH=. mocha test/*.test.js"
   },
